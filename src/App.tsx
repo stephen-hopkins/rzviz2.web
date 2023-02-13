@@ -1,23 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import LoginDisplay from "./LoginDisplay";
+import {useIsAuthenticated, useMsal} from "@azure/msal-react";
+import {loginRequest} from "./authConfig";
 
 function App() {
+
+  const { instance } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+
+  const onClickLoginLogout = async () => {
+    if (isAuthenticated) {
+      await instance.logout();
+    } else {
+      await instance.loginRedirect(loginRequest);
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button className="login-button" onClick={onClickLoginLogout}>{isAuthenticated ? 'Log out' : 'Log in'}</button>
+        <LoginDisplay />
       </header>
     </div>
   );
