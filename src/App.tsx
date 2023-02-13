@@ -9,6 +9,11 @@ function App() {
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
 
+  // this is how to trigger a different flow.  eg could be update profile or change password etc
+  // const forgotPassword = async () => {
+  //   await instance.loginRedirect({...loginRequest, ...b2cPolicies.authorities.forgotPassword});
+  // }
+
   const onClickLoginLogout = async () => {
     if (isAuthenticated) {
       await instance.logout();
