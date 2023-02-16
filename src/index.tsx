@@ -11,7 +11,8 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import NavigationMenu from "./components/NavigationMenu";
-import UserList from "./components/UserList";
+import UserList, {loader as userListLoader} from "./components/UserList";
+import ErrorPage from "./components/ErrorPage";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -19,10 +20,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <NavigationMenu />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "users/list",
-        element: <UserList />
+        element: <UserList />,
+        loader: userListLoader
       }
     ]
   }
