@@ -1,13 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {msalConfig} from "./authConfig";
 import {PublicClientApplication} from "@azure/msal-browser";
 import {MsalProvider} from "@azure/msal-react";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import NavigationMenu from "./components/NavigationMenu";
+import UserList from "./components/UserList";
 
 const msalInstance = new PublicClientApplication(msalConfig);
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <NavigationMenu />,
+    children: [
+      {
+        path: "users/list",
+        element: <UserList />
+      }
+    ]
+  }
+])
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +34,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <MsalProvider instance={msalInstance}>
-      <App/>
+      <RouterProvider router={router} />
     </MsalProvider>
   </React.StrictMode>
 );
