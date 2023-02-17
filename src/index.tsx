@@ -13,6 +13,7 @@ import "primeflex/primeflex.css";
 import NavigationMenu from "./components/NavigationMenu";
 import UserList, {loader as userListLoader} from "./components/UserList";
 import ErrorPage from "./components/ErrorPage";
+import AddUser from "./components/AddUser";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         path: "users/list",
         element: <UserList />,
         loader: userListLoader
+      },
+      {
+        path: "users/add",
+        element: <AddUser />
       }
     ]
   }

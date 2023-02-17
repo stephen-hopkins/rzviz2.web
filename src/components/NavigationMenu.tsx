@@ -21,6 +21,11 @@ function NavigationMenu() {
           label: 'List',
           icon: 'pi pi-list',
           command: () => navigate('/users/list')
+        },
+        {
+          label: 'Add',
+          icon: 'pi pi-plus',
+          command: () => navigate('/users/add')
         }
       ]
     }

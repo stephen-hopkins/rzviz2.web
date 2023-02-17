@@ -2,6 +2,7 @@ import React from 'react';
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {useLoaderData} from "react-router-dom";
+import {RvizUser} from "../models/RvizUser";
 
 export async function loader() {
   const res = await fetch(`${process.env.REACT_APP_API_ROOT}listusers`);
@@ -14,10 +15,10 @@ export async function loader() {
 
 function UserList() {
 
-  const users = useLoaderData() as [];
+  const users = useLoaderData() as RvizUser[];
 
   return (
-    <DataTable value={users} className="lg:m-4" responsiveLayout="scroll">
+    <DataTable value={users} className="" responsiveLayout="scroll">
       <Column field="displayName" header="Display Name"></Column>
       <Column field="email" header="Email"></Column>
       <Column field="givenName" header="Given Name"></Column>
