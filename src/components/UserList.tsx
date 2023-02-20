@@ -18,7 +18,7 @@ function UserList() {
   const users = useLoaderData() as RvizUser[];
 
   return (
-    <DataTable value={users} className="" responsiveLayout="scroll">
+    <DataTable value={users} className="m-4" responsiveLayout="scroll">
       <Column field="displayName" header="Display Name"></Column>
       <Column field="email" header="Email"></Column>
       <Column field="givenName" header="Given Name"></Column>
