@@ -17,6 +17,11 @@ export type RvizUser = RvizUserFields & {
   id: string;
 };
 
-export type InternalExternal = "Internal" | "External";
-export type UserLevel = "Admin" | "Super User" | "User";
-export type SubscriptionStatus = "Free" | "Trial" | "Pro";
+export const internalExternalValues = ["Internal", "External"] as const;
+export type InternalExternal = typeof internalExternalValues[number];
+
+export const userLevelValues = ["Admin", "Super User", "User"] as const;
+export type UserLevel = typeof userLevelValues[number];
+
+export const subscriptionStatusValues = ["Free", "Trial", "Pro"]
+export type SubscriptionStatus = typeof subscriptionStatusValues[number];

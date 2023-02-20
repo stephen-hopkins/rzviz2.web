@@ -5,7 +5,7 @@ import {useLoaderData} from "react-router-dom";
 import {RvizUser} from "../models/RvizUser";
 
 export async function loader() {
-  const res = await fetch(`${process.env.REACT_APP_API_ROOT}listusers`);
+  const res = await fetch(`${process.env.REACT_APP_API_ROOT}users`);
   if (res.ok) {
     return await res.json();
   }
