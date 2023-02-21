@@ -12,14 +12,13 @@ import {InputText} from "primereact/inputtext";
 import {Dropdown} from "primereact/dropdown";
 import {Toast} from "primereact/toast";
 import {ProgressSpinner} from "primereact/progressspinner";
+import {PublicClientApplication} from "@azure/msal-browser";
+import {fetchGet, fetchPatch} from "../helpers/fetch";
+import {useMsal} from "@azure/msal-react";
 
-export async function loader() {
-  const res = await fetch(`${process.env.REACT_APP_API_ROOT}users`);
-  if (res.ok) {
-    return await res.json();
-  }
-  console.error("Error fetching user list");
-  return [];
+export const loader = (msal: PublicClientApplication) => async () => {
+  const res = await fetchGet(`${process.env.REACT_APP_API_ROOT}users`, msal);
+  return res ?? [];
 }
 
 function UserList() {
@@ -28,23 +27,23 @@ function UserList() {
   const revalidator = useRevalidator();
   const toast = useRef(null as Toast | null);
   const [saving, setSaving] = useState(false);
+  const msal = useMsal();
 
   const onRowEditComplete = async (e: DataTableRowEditCompleteEvent) => {
     setSaving(true);
     var newData = e.newData as RvizUser;
-    const res = await fetch(`${process.env.REACT_APP_API_ROOT}user/${newData.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(newData)
-    });
-    if (res.ok) {
-      revalidator.revalidate();
-    } else {
-      const body = await res.text();
-      console.error("Error adding user", body);
-      toast.current?.show({severity: 'error', summary: 'Error', detail: body})
+    const res = await fetchPatch(`${process.env.REACT_APP_API_ROOT}user/${newData.id}`, newData, msal)
+    if (res) {
+      if (res.ok) {
+        revalidator.revalidate();
+      } else {
+        const body = await res.text();
+        console.error("Error adding user", body);
+        toast.current?.show({severity: 'error', summary: 'Error', detail: body})
+      }
     }
     setSaving(false);
-  };
+  }
 
   const textEditor = (options: ColumnEditorOptions) => <InputText type="text" value={options.value}
                                                                   onChange={(e) => options.editorCallback && options.editorCallback(e.target.value)}/>
@@ -77,7 +76,7 @@ function UserList() {
         <Column rowEditor headerStyle={{width: '10%', minWidth: '8rem'}} bodyStyle={{textAlign: 'center'}}></Column>
       </DataTable>
       <Toast ref={toast}/>
-      {saving && <ProgressSpinner className='overlay-spinner' />}
+      {saving && <ProgressSpinner className='overlay-spinner'/>}
     </>
   );
 }

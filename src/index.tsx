@@ -26,7 +26,7 @@ const router = createBrowserRouter([
       {
         path: "users/list",
         element: <UserList />,
-        loader: userListLoader
+        loader: userListLoader(msalInstance)
       },
       {
         path: "users/add",

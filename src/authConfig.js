@@ -82,7 +82,7 @@ export const msalConfig = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-  scopes: []
+  scopes: ['https://rviz2.onmicrosoft.com/api/all']
 };
 
 /**
@@ -90,6 +90,6 @@ export const loginRequest = {
  * between applications by providing a "login_hint" property.
  */
 export const silentRequest = {
-  scopes: ["openid", "profile"],
+  scopes: ["openid", "profile", "all"],
   loginHint: "example@domain.net"
 };
