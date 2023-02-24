@@ -10,7 +10,8 @@ type Props<T> = {
     values: T,
     setFieldValue: (field: keyof T, value: string) => void,
     touched: FormikTouched<T>,
-    errors: FormikErrors<T>
+    errors: FormikErrors<T>,
+    setFieldTouched: (field: keyof T) => void
   }
 }
 
@@ -18,16 +19,19 @@ function FormikInputText<T extends {}>({field, displayName, formik}: Props<T>) {
 
   const isFormFieldInvalid = !!(formik.touched[field] && formik.errors[field]);
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(field, e.target.value);
+    formik.setFieldTouched(field);
+  }
+
   return (
-    <span className="p-float-label mt-5">
+    <span className="p-float-label">
           <InputText
             id={field as string}
             name={field as string}
             value={formik.values[field] as string}
-            onChange={(e) => {
-              formik.setFieldValue(field, e.target.value);
-            }}
-            className={classNames({'p-invalid': isFormFieldInvalid})}
+            onChange={onChange}
+            className={classNames('w-full', {'p-invalid': isFormFieldInvalid})}
           />
           <label htmlFor={field as string}>{displayName}</label>
         </span>
