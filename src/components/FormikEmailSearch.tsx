@@ -30,7 +30,12 @@ function FormikEmailSearch({formik, search}: Props) {
   const searchAD = async () => {
     const res = await fetchGet<RvizUser[]>(`${process.env.REACT_APP_API_ROOT}ad/users?email=${formik.values["email"]}`, msal.instance);
     if (res) {
-      setEmails(res.map(u => u.email));
+      setEmails(res.reduce((acc, curr) => {
+        if (curr.email && curr.email !== '') {
+          acc.push(curr.email);
+        }
+        return acc;
+      }, [] as string[]));
     }
   }
 
