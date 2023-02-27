@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {InputText} from "primereact/inputtext";
 import {classNames} from "primereact/utils";
 import {AutoComplete} from "primereact/autocomplete";
 import {FormikErrors, FormikTouched} from "formik";
@@ -29,7 +28,7 @@ function FormikEmailSearch({formik, search}: Props) {
   const [emails, setEmails] = useState([] as string[]);
 
   const searchAD = async () => {
-    const res = await fetchGet<RvizUser[]>(`${process.env.REACT_APP_API_ROOT}users?email=${formik.values["email"]}`, msal.instance);
+    const res = await fetchGet<RvizUser[]>(`${process.env.REACT_APP_API_ROOT}ad/users?email=${formik.values["email"]}`, msal.instance);
     if (res) {
       setEmails(res.map(u => u.email));
     }

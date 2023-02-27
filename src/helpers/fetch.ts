@@ -1,4 +1,4 @@
-import {IPublicClientApplication, PublicClientApplication} from "@azure/msal-browser";
+import {IPublicClientApplication} from "@azure/msal-browser";
 import {loginRequest} from "../authConfig";
 import {IMsalContext} from "@azure/msal-react";
 
