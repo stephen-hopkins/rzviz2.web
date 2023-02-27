@@ -2,7 +2,7 @@ import {IPublicClientApplication, PublicClientApplication} from "@azure/msal-bro
 import {loginRequest} from "../authConfig";
 import {IMsalContext} from "@azure/msal-react";
 
-export async function fetchGet<T>(url: string, msal: PublicClientApplication) {
+export async function fetchGet<T>(url: string, msal: IPublicClientApplication) {
   const authHeader = await getAuthHeader(msal);
   const res = await fetch(url, {
     method: 'GET',

@@ -15,6 +15,7 @@ import {Toast} from "primereact/toast";
 import {Password} from "primereact/password";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {Card} from "primereact/card";
+import FormikEmailSearch from "./FormikEmailSearch";
 
 const initialValues = {
   displayName: '',
@@ -75,9 +76,6 @@ function AddUser() {
   const formik = useFormik({initialValues, onSubmit, validate});
 
   const hidePassword = formik.values['internalExternal'] === 'Internal';
-
-  //const formErrors = Object.values(formik.errors).map(e => <small className="p-error">{e}</small>);
-
   const canSubmit = formik.dirty && formik.isValid;
 
   return (
@@ -89,7 +87,7 @@ function AddUser() {
                                          options={[...internalExternalValues]} formik={formik}/>
           </div>
           <div className="field col-12 md:col-6 mt-2">
-            <FormikInputText<NewRvizUser> field='email' displayName="Email" formik={formik}/>
+            <FormikEmailSearch formik={formik} search={formik.values["internalExternal"] === 'Internal'}/>
           </div>
           <div className="field col-12 md:col-6 mt-1 md:mt-2">
             <Password className={classNames('w-full',{ 'hidden': hidePassword})} key='password' value={formik.values['password'] as string}
