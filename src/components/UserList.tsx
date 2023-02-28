@@ -63,16 +63,16 @@ function UserList() {
 
   return (
     <>
-      <DataTable value={users} editMode="row" dataKey="id" className="m-4" responsiveLayout="scroll"
+      <DataTable value={users} editMode="row" dataKey="id" responsiveLayout="scroll"
                  onRowEditComplete={onRowEditComplete}>
-        <Column field="displayName" header="Display Name" editor={textEditor}></Column>
-        <Column field="email" header="Email"></Column>
+        <Column field="email" header="Email" frozen></Column>
         <Column field="givenName" header="Given Name" editor={textEditor}></Column>
         <Column field="surname" header="Surname" editor={textEditor}></Column>
-        <Column field="internalExternal" header="Internal / External" editor={dropdownEditor}></Column>
+        <Column field="displayName" header="Display Name" editor={textEditor}></Column>
         <Column field="jobTitle" header="Job Title" editor={textEditor}></Column>
+        <Column field="internalExternal" header="Type" editor={dropdownEditor}></Column>
         <Column field="level" header="Level" editor={dropdownEditor}></Column>
-        <Column field="subscriptionStatus" header="Subscription Status" editor={dropdownEditor}></Column>
+        <Column field="subscriptionStatus" header="Subscription" editor={dropdownEditor}></Column>
         <Column rowEditor headerStyle={{width: '10%', minWidth: '8rem'}} bodyStyle={{textAlign: 'center'}}></Column>
       </DataTable>
       <Toast ref={toast}/>
