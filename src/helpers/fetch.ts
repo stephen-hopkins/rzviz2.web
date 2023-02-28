@@ -35,7 +35,7 @@ async function getAuthHeader(msal: IPublicClientApplication) {
       account: activeAccount ?? accounts[0]
     });
     return {
-      Authentication: `Bearer ${result.accessToken}`
+      Authorization: `Bearer ${result.accessToken}`
     }
   }
 }
