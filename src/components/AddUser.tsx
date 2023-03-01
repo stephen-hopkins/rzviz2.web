@@ -16,6 +16,8 @@ import {Password} from "primereact/password";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {Card} from "primereact/card";
 import FormikEmailSearch from "./FormikEmailSearch";
+import {fetchPost} from "../helpers/fetch";
+import {useMsal} from "@azure/msal-react";
 
 const initialValues = {
   displayName: '',
@@ -34,19 +36,23 @@ function AddUser() {
   const navigate = useNavigate();
   const toast = useRef(null as Toast | null);
   const [loading, setLoading] = useState(false);
+  const msal = useMsal();
 
-  const onSubmit = async (data: NewRvizUser) => {
+  const onSubmit = async (newUser: NewRvizUser) => {
 
     setLoading(true);
-    const res = await fetch(`${process.env.REACT_APP_API_ROOT}user`, {method: 'POST', body: JSON.stringify(data)});
-    if (res.ok) {
-      navigate('/users/list');
-      return;
+    const res = await fetchPost(`${process.env.REACT_APP_API_ROOT}user`, newUser, msal);
+    console.log(res);
+    if (res) {
+      if (res.ok) {
+        navigate('/users/list');
+        return;
+      }
+      const body = await res.text();
+      console.error("Error adding user", body);
+      setLoading(false);
+      toast.current?.show({severity: 'error', summary: 'Error', detail: body, sticky: true})
     }
-    const body = await res.text();
-    console.error("Error adding user", body);
-    setLoading(false);
-    toast.current?.show({severity: 'error', summary: 'Error', detail: body})
   };
 
   const validate = (data: NewRvizUser) => {
@@ -116,7 +122,7 @@ function AddUser() {
           <div className="field col-12 flex justify-content-center">
             <Button className="w-4" type="submit" label="Submit" disabled={!canSubmit} severity={canSubmit ? 'success' : 'warning'}/>
           </div>
-          <Toast ref={toast}/>
+          <Toast ref={toast} position="bottom-right"/>
           {loading && <ProgressSpinner className='overlay-spinner'/>}
         </div>
       </form>

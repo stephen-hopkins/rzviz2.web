@@ -26,6 +26,17 @@ export async function fetchPatch(url: string, data: {}, msal: IMsalContext) {
   }
 }
 
+export async function fetchPost(url: string, data: {}, msal: IMsalContext) {
+  const authHeader = await getAuthHeader(msal.instance);
+  if (authHeader) {
+    return fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: authHeader
+    });
+  }
+}
+
 async function getAuthHeader(msal: IPublicClientApplication) {
   const activeAccount = msal.getActiveAccount();
   const accounts = msal.getAllAccounts();
