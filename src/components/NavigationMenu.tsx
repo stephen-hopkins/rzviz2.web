@@ -1,6 +1,5 @@
 import React from 'react';
 import {Menubar} from "primereact/menubar";
-import {Button} from "primereact/button";
 import {useIsAuthenticated, useMsal} from "@azure/msal-react";
 import {emailLoginRequest, loginRequest} from "../authConfig";
 import {Outlet, useNavigate} from "react-router-dom";
@@ -48,14 +47,6 @@ function NavigationMenu() {
       ]
     }, loginItem
   ] : [loginItem];
-
-  const onClickLoginLogout = async () => {
-    if (isAuthenticated) {
-      await instance.logout();
-    } else {
-      await instance.loginRedirect(loginRequest);
-    }
-  }
 
   return (
     <div className="flex flex-column">
