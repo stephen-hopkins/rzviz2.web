@@ -2,7 +2,7 @@ import React from 'react';
 import {Menubar} from "primereact/menubar";
 import {Button} from "primereact/button";
 import {useIsAuthenticated, useMsal} from "@azure/msal-react";
-import {loginRequest} from "../authConfig";
+import {emailLoginRequest, loginRequest} from "../authConfig";
 import {Outlet, useNavigate} from "react-router-dom";
 import {useIsAdmin} from "../hooks/useIsAdmin";
 
@@ -12,6 +12,23 @@ function NavigationMenu() {
   const {instance} = useMsal();
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
+
+  const loginItem = {
+    label: 'Account',
+    icon: 'pi pi-user',
+    items: isAuthenticated ? [
+      { label: 'Logout', command: () => instance.logout()}
+    ] : [
+      {
+        label: 'AD Login',
+        command: () => instance.loginRedirect(loginRequest)
+      },
+      {
+        label: "Email Login",
+        command: () => instance.loginRedirect(emailLoginRequest)
+      }
+    ]
+  };
 
   const menuItems = isAdmin ?  [
     {
@@ -29,8 +46,8 @@ function NavigationMenu() {
           command: () => navigate('/users/add')
         }
       ]
-    }
-  ] : [];
+    }, loginItem
+  ] : [loginItem];
 
   const onClickLoginLogout = async () => {
     if (isAuthenticated) {
@@ -42,7 +59,7 @@ function NavigationMenu() {
 
   return (
     <div className="flex flex-column">
-      <Menubar model={menuItems} end={<Button onClick={onClickLoginLogout}>{isAuthenticated ? 'Log out' : 'Log in'}</Button>} />
+      <Menubar model={menuItems} />
       <Outlet />
     </div>
   );

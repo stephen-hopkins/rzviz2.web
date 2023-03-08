@@ -12,13 +12,17 @@ import { LogLevel } from "@azure/msal-browser";
  */
 export const b2cPolicies = {
   names: {
-    signIn: "B2C_1_signup_signin",
+    adSignupSignIn: "B2C_1_signup_signin",
+    emailSignIn: "B2C_1_react_sign_in",
     forgotPassword: "b2c_1_reset",
     editProfile: "b2c_1_edit_profile"
   },
   authorities: {
-    signIn: {
+    adSignupSignIn: {
       authority: "https://rviz2.b2clogin.com/rviz2.onmicrosoft.com/B2C_1_signup_signin",
+    },
+    emailSignIn: {
+      authority: "https://rviz2.b2clogin.com/rviz2.onmicrosoft.com/B2C_1_react_sign_in"
     },
     forgotPassword: {
       authority: "https://rviz2.b2clogin.com/rviz2.onmicrosoft.com/b2c_1_reset",
@@ -38,7 +42,7 @@ export const b2cPolicies = {
 export const msalConfig = {
   auth: {
     clientId: "889adc33-e173-4615-becc-b216602d48f1", // This is the ONLY mandatory field that you need to supply.
-    authority: b2cPolicies.authorities.signIn.authority, // Use a sign-up/sign-in user-flow as a default authority
+    authority: b2cPolicies.authorities.adSignupSignIn.authority, // Use a sign-up/sign-in user-flow as a default authority
     knownAuthorities: [b2cPolicies.authorityDomain], // Mark your B2C tenant's domain as trusted.
     redirectUri: "/", // Points to window.location.origin. You must register this URI on Azure Portal/App Registration.
     postLogoutRedirectUri: "/", // Indicates the page to navigate after logout.
@@ -84,6 +88,11 @@ export const msalConfig = {
 export const loginRequest = {
   scopes: ['https://rviz2.onmicrosoft.com/api/all']
 };
+
+export const emailLoginRequest = {
+  ...loginRequest,
+  ...b2cPolicies.authorities.emailSignIn
+}
 
 /**
  * An optional silentRequest object can be used to achieve silent SSO
