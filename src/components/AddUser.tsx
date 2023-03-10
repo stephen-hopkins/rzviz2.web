@@ -15,7 +15,6 @@ import {Toast} from "primereact/toast";
 import {Password} from "primereact/password";
 import {ProgressSpinner} from "primereact/progressspinner";
 import {Card} from "primereact/card";
-import FormikEmailSearch from "./FormikEmailSearch";
 import {fetchPost} from "../helpers/fetch";
 import {useMsal} from "@azure/msal-react";
 
@@ -25,7 +24,7 @@ const initialValues = {
   surname: '',
   email: '',
   jobTitle: '',
-  internalExternal: 'Internal',
+  internalExternal: 'External',
   level: 'User',
   subscriptionStatus: 'Free',
   password: ''
@@ -57,12 +56,8 @@ function AddUser() {
 
   const validate = (data: NewRvizUser) => {
     // all are required
-    const keys = ['displayName', 'givenName', 'surname', 'email', 'jobTitle', 'internalExternal', 'level',
-      'subscriptionStatus'] as (keyof NewRvizUser)[];
-    if (data.internalExternal === "External") {
-      keys.push('password');
-    }
-
+    const keys = ['displayName', 'givenName', 'surname', 'email', 'jobTitle', 'level',
+      'subscriptionStatus', 'password'] as (keyof NewRvizUser)[];
     const errors = keys.reduce((acc, key) => {
       if (data[key]) {
         return acc;
@@ -81,22 +76,17 @@ function AddUser() {
 
   const formik = useFormik({initialValues, onSubmit, validate});
 
-  const hidePassword = formik.values['internalExternal'] === 'Internal';
   const canSubmit = formik.dirty && formik.isValid;
 
   return (
-    <Card title="Add user" className="mt-2 m-auto md:w-4">
+    <Card title="Add user" className="mt-2 md:mt-4 m-auto md:w-4">
       <form onSubmit={formik.handleSubmit}>
         <div className="formgrid grid">
-          <div className="field col-12 mt-3">
-            <FormikDropdown<NewRvizUser> field='internalExternal' displayName="Internal or external"
-                                         options={[...internalExternalValues]} formik={formik}/>
-          </div>
           <div className="field col-12 md:col-6 mt-2">
-            <FormikEmailSearch formik={formik} search={formik.values["internalExternal"] === 'Internal'}/>
+            <FormikInputText<NewRvizUser> field='email' displayName="Email" formik={formik} />
           </div>
           <div className="field col-12 md:col-6 mt-1 md:mt-2">
-            <Password className={classNames('w-full',{ 'hidden': hidePassword})} key='password' value={formik.values['password'] as string}
+            <Password className={classNames('w-full')} key='password' value={formik.values['password'] as string}
                       onChange={e => formik.setFieldValue('password', e.target.value)} placeholder="Password"/>
           </div>
           <div className="field col-12 md:col-6 mt-3">
